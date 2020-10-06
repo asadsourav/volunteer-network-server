@@ -19,6 +19,7 @@ app.use(express.static('public'));
 const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
 
 client.connect(err => {
+  console.log(err);
   const collection = client.db("volunteerNetwork").collection("registrations");
   const eventsCollection = client.db("volunteerNetwork").collection("newEvents");
 
@@ -50,12 +51,13 @@ client.connect(err => {
     console.log(req.query.email)
     collection.find({email: req.query.email})
     .toArray((err,documents) =>{
+
       res.send(documents)
     })
   })
 
   app.get('/allRegisteredEvents',(req, res) =>{
-    collection.find({})
+    collection.find()
     .toArray((err,documents) =>{
       res.send(documents)
     })
@@ -65,11 +67,11 @@ client.connect(err => {
     collection.deleteOne({_id: ObjectId(req.params.id)})
     .then((result) =>{
       
-      // console.log(result)
+      console.log(result)
     })
-    console.log(req.params.id)
+    // console.log(req.params.id)
   })
-  // console.log('database connection success')
+  console.log('database connection success')
 //   client.close();
 });
 
